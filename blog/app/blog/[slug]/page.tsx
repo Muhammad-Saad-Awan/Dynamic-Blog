@@ -23,7 +23,7 @@ interface BlogData extends Blog {
 }
 
 const BlogPost = async ({ params }: Params) => {
-  const { slug } = params;
+  const { slug } = await params;
 
 
   // Fetch current blog post and related articles
