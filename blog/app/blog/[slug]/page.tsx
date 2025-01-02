@@ -18,8 +18,17 @@ interface BlogData extends Blog {
   _id: string;
 }
 
-const BlogPost = async ({ params }: { params: { slug: string } }) => {
-  const   { slug } = await params;
+const fetchParams = async (): Promise<{ slug: string }> => {
+  // Simulate async operation
+  return { slug: "example-slug" };
+};
+
+const BlogPost = async () => {
+  const params = await fetchParams(); // Awaiting the async operation
+  const { slug } = params;
+   
+
+
 
 
   // Fetch current blog post and related articles
