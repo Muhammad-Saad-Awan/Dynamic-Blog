@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Clock, Share2, Bookmark, Heart } from "lucide-react";
 import { Poppins } from "next/font/google";
+import CommentSection from "../../../components/Comments";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -126,7 +127,7 @@ const BlogPost = async ({ params }: PageProps) => {
             </div>
           </div>
         </article>
-
+           <CommentSection/>
         {data.relatedPosts.length > 0 && (
           <div className="mt-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h2>
