@@ -30,7 +30,7 @@ const BlogPost = async ({ params }: Params) => {
   const data = await client.fetch(
     `{
       "post": *[_type == "blog" && slug.current == $slug][0]{
-        _id,
+         
         heading,
         description,
         "slug": slug.current,
@@ -87,8 +87,9 @@ const BlogPost = async ({ params }: Params) => {
             <Image
               src={data.post.imageUrl}
               alt={data.post.heading}
-              fill
+               
               className="object-cover"
+              quality={100}  
               priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

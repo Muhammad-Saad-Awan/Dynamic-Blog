@@ -44,7 +44,10 @@ export default async function HomePage() {
                     alt={blog.heading}
                     width={200}
                     height={200}
-                    className='w-full h-full object-cover hover:scale-105 transition-transform duration-300'
+                     
+                    className="object-cover"
+                    quality={90}
+                    priority
                   />
                 </div>
               )}
