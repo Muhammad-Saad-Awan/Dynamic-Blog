@@ -1,30 +1,30 @@
-import { Blog } from "@/components/Home";
+
 import { client } from "@/sanity/lib/client";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Clock, Share2, Bookmark, Heart } from "lucide-react";
-import { Poppins } from 'next/font/google';
+import { Poppins } from "next/font/google";
 
 const roboto = Poppins({
-    subsets: ['latin'], 
-    weight: ['400', '700'], 
-    style: ['normal', 'italic'], 
-  });
-  
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+});
 
-interface Params {
-  params: {
-    slug: string;
-  }
+interface Blog {
+  heading: string;
+  description: string;
+  slug: string;
+  imageUrl: string;
 }
 
 interface BlogData extends Blog {
   _id: string;
 }
 
-const BlogPost = async ({ params }: Params) => {
-  const { slug } = params;
-  
+const BlogPost = async ({ params }: { params: { slug: string } }) => {
+  const { slug } = params; // Destructure slug from params
+
   // Fetch current blog post and related articles
   const data = await client.fetch(
     `{
@@ -46,11 +46,20 @@ const BlogPost = async ({ params }: Params) => {
 
   if (!data.post) {
     return (
-      <div className={`${roboto.className} min-h-screen flex items-center justify-center bg-gray-50`}>
+      <div
+        className={`${roboto.className} min-h-screen flex items-center justify-center bg-gray-50`}
+      >
         <div className="text-center bg-white p-8 rounded-lg shadow-lg">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">Blog Post Not Found</h1>
-          <p className="text-gray-600 mb-6">The blog post you're looking for doesn't exist or has been moved.</p>
-          <Link href="/" className="text-blue-600 hover:underline inline-flex items-center gap-2">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">
+            Blog Post Not Found
+          </h1>
+          <p className="text-gray-600 mb-6">
+            The blog post you're looking for doesn't exist or has been moved.
+          </p>
+          <Link
+            href="/"
+            className="text-blue-600 hover:underline inline-flex items-center gap-2"
+          >
             <ArrowLeft size={20} />
             Return to Homepage
           </Link>
@@ -60,12 +69,12 @@ const BlogPost = async ({ params }: Params) => {
   }
 
   return (
-    <div className={`${roboto.className}min-h-screen bg-gray-50`}>
+    <div className={`${roboto.className} min-h-screen bg-gray-50`}>
       {/* Top Navigation Bar */}
       <nav className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
           >
             <ArrowLeft size={20} />
@@ -84,7 +93,6 @@ const BlogPost = async ({ params }: Params) => {
 
       <main className="max-w-5xl mx-auto px-4 py-12">
         <article className="bg-white rounded-2xl shadow-sm overflow-hidden">
-           
           <div className="relative h-[500px] w-full">
             <Image
               src={data.post.imageUrl}
@@ -109,9 +117,7 @@ const BlogPost = async ({ params }: Params) => {
             </div>
           </div>
 
-           
           <div className="p-8">
-            {/* Social Engagement */}
             <div className="flex items-center gap-6 mb-8 pb-8 border-b border-gray-100">
               <button className="flex items-center gap-2 text-gray-600 hover:text-red-500 transition-colors">
                 <Heart size={20} />
@@ -127,7 +133,6 @@ const BlogPost = async ({ params }: Params) => {
               </button>
             </div>
 
-            
             <div className="max-w-3xl">
               <div className="prose prose-lg prose-gray">
                 <p className="text-xl text-gray-600 leading-relaxed mb-8">
@@ -138,14 +143,15 @@ const BlogPost = async ({ params }: Params) => {
           </div>
         </article>
 
-        
         {data.relatedPosts.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Related Articles
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {data.relatedPosts.map((post: BlogData) => (
-                <Link 
-                  href={`/blog/${post.slug}`} 
+                <Link
+                  href={`/blog/${post.slug}`}
                   key={post._id}
                   className="group bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow"
                 >
@@ -172,7 +178,7 @@ const BlogPost = async ({ params }: Params) => {
           </div>
         )}
       </main>
-</div>
+    </div>
   );
 };
 

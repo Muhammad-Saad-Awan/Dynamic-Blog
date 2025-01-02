@@ -29,7 +29,7 @@ export default async function HomePage() {
   return (
     <div className={` ${roboto.className} mt-20 max-w-7xl mx-auto px-4 py-8`}>
       <section className="mb-16 text-center">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">Welcome to Our Blog</h1>
+        <h1 className="text-4xl md:text-6xl font-bold mb-4">Welcome to My Blogs</h1>
         <p className="text-lg text-gray-600">Explore our latest articles and insights</p>
       </section>
 
