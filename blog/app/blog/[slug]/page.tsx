@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, Clock, Share2, Bookmark, Heart } from "lucide-react";
 import { Poppins } from "next/font/google";
 
+
 const roboto = Poppins({
   subsets: ["latin"],
   weight: ["400", "700"],
@@ -23,6 +24,7 @@ interface BlogData extends Blog {
 
 const BlogPost = async ({ params }: { params: { slug: string } }) => {
   const { slug } = params;
+
 
   // Fetch current blog post and related articles
   const data = await client.fetch(
