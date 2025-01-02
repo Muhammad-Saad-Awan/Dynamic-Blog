@@ -22,7 +22,7 @@ interface BlogData extends Blog {
   _id: string;
 }
 
-const BlogPost = async ({ params }: { params: { slug: string } }) => {
+const BlogPost = async ({ params }: Params) => {
   const { slug } = params;
 
 
