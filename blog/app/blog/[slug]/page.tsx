@@ -1,4 +1,4 @@
-
+import { Blog } from "@/components/Home";
 import { client } from "@/sanity/lib/client";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,11 +11,10 @@ const roboto = Poppins({
   style: ["normal", "italic"],
 });
 
-interface Blog {
-  heading: string;
-  description: string;
-  slug: string;
-  imageUrl: string;
+interface Params {
+  params: {
+    slug: string;
+  };
 }
 
 interface BlogData extends Blog {
@@ -23,43 +22,35 @@ interface BlogData extends Blog {
 }
 
 const BlogPost = async ({ params }: { params: { slug: string } }) => {
-  const { slug } = params; // Destructure slug from params
+  const { slug } = params;
 
   // Fetch current blog post and related articles
   const data = await client.fetch(
     `{
-      "post": *[_type == "blog" && slug.current == "${slug}"][0]{
+      "post": *[_type == "blog" && slug.current == $slug][0]{
         _id,
         heading,
         description,
         "slug": slug.current,
         "imageUrl": image.asset->url
       },
-      "relatedPosts": *[_type == "blog" && slug.current != "${slug}"][0...3]{
+      "relatedPosts": *[_type == "blog" && slug.current != $slug][0...3]{
         _id,
         heading,
         "slug": slug.current,
         "imageUrl": image.asset->url
       }
-    }`
+    }`,
+    { slug }
   );
 
   if (!data.post) {
     return (
-      <div
-        className={`${roboto.className} min-h-screen flex items-center justify-center bg-gray-50`}
-      >
+      <div className={`${roboto.className} min-h-screen flex items-center justify-center bg-gray-50`}>
         <div className="text-center bg-white p-8 rounded-lg shadow-lg">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">
-            Blog Post Not Found
-          </h1>
-          <p className="text-gray-600 mb-6">
-            The blog post you're looking for doesn't exist or has been moved.
-          </p>
-          <Link
-            href="/"
-            className="text-blue-600 hover:underline inline-flex items-center gap-2"
-          >
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">Blog Post Not Found</h1>
+          <p className="text-gray-600 mb-6">The blog post you're looking for doesn't exist or has been moved.</p>
+          <Link href="/" className="text-blue-600 hover:underline inline-flex items-center gap-2">
             <ArrowLeft size={20} />
             Return to Homepage
           </Link>
@@ -73,10 +64,7 @@ const BlogPost = async ({ params }: { params: { slug: string } }) => {
       {/* Top Navigation Bar */}
       <nav className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
-          >
+          <Link href="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
             <ArrowLeft size={20} />
             Back to Articles
           </Link>
@@ -103,9 +91,7 @@ const BlogPost = async ({ params }: { params: { slug: string } }) => {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-              <h1 className="text-5xl font-bold mb-4 leading-tight">
-                {data.post.heading}
-              </h1>
+              <h1 className="text-5xl font-bold mb-4 leading-tight">{data.post.heading}</h1>
               <div className="flex items-center gap-4 text-gray-200">
                 <div className="flex items-center gap-2">
                   <Clock size={18} />
@@ -118,6 +104,7 @@ const BlogPost = async ({ params }: { params: { slug: string } }) => {
           </div>
 
           <div className="p-8">
+            {/* Social Engagement */}
             <div className="flex items-center gap-6 mb-8 pb-8 border-b border-gray-100">
               <button className="flex items-center gap-2 text-gray-600 hover:text-red-500 transition-colors">
                 <Heart size={20} />
@@ -135,9 +122,7 @@ const BlogPost = async ({ params }: { params: { slug: string } }) => {
 
             <div className="max-w-3xl">
               <div className="prose prose-lg prose-gray">
-                <p className="text-xl text-gray-600 leading-relaxed mb-8">
-                  {data.post.description}
-                </p>
+                <p className="text-xl text-gray-600 leading-relaxed mb-8">{data.post.description}</p>
               </div>
             </div>
           </div>
@@ -145,9 +130,7 @@ const BlogPost = async ({ params }: { params: { slug: string } }) => {
 
         {data.relatedPosts.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Related Articles
-            </h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {data.relatedPosts.map((post: BlogData) => (
                 <Link
