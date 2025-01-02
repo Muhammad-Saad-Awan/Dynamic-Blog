@@ -5,32 +5,20 @@ import Link from "next/link";
 import { ArrowLeft, Clock, Share2, Bookmark, Heart } from "lucide-react";
 import { Poppins } from "next/font/google";
 
-
 const roboto = Poppins({
   subsets: ["latin"],
   weight: ["400", "700"],
   style: ["normal", "italic"],
 });
 
-interface Params {
-  params: {
-    slug: string;
-  };
-}
-
 interface BlogData extends Blog {
   _id: string;
 }
 
-const BlogPost = async ({ params }: Params) => {
-  const { slug } = await params;
-
-
-  // Fetch current blog post and related articles
+async function getData(slug: string) {
   const data = await client.fetch(
     `{
       "post": *[_type == "blog" && slug.current == $slug][0]{
-         
         heading,
         description,
         "slug": slug.current,
@@ -45,6 +33,15 @@ const BlogPost = async ({ params }: Params) => {
     }`,
     { slug }
   );
+  return data;
+}
+
+export default async function BlogPost({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const data = await getData(params.slug);
 
   if (!data.post) {
     return (
@@ -63,7 +60,6 @@ const BlogPost = async ({ params }: Params) => {
 
   return (
     <div className={`${roboto.className} min-h-screen bg-gray-50`}>
-      {/* Top Navigation Bar */}
       <nav className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
@@ -87,9 +83,9 @@ const BlogPost = async ({ params }: Params) => {
             <Image
               src={data.post.imageUrl}
               alt={data.post.heading}
-               
+              fill
               className="object-cover"
-              quality={100}  
+              quality={100}
               priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -107,7 +103,6 @@ const BlogPost = async ({ params }: Params) => {
           </div>
 
           <div className="p-8">
-            {/* Social Engagement */}
             <div className="flex items-center gap-6 mb-8 pb-8 border-b border-gray-100">
               <button className="flex items-center gap-2 text-gray-600 hover:text-red-500 transition-colors">
                 <Heart size={20} />
@@ -166,6 +161,4 @@ const BlogPost = async ({ params }: Params) => {
       </main>
     </div>
   );
-};
-
-export default BlogPost;
+}
