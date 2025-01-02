@@ -1,4 +1,4 @@
-// page.tsx
+ // page.tsx
 
 import { Blog } from "@/components/Home";
 import { client } from "@/sanity/lib/client";
@@ -8,9 +8,7 @@ import { ArrowLeft, Clock, Share2, Bookmark, Heart } from "lucide-react";
 import { Poppins } from "next/font/google";
 
 interface PageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
 const roboto = Poppins({
@@ -24,7 +22,7 @@ interface BlogData extends Blog {
 }
 
 const BlogPost = async ({ params }: PageProps) => {
-  const { slug } = params;
+  const { slug } = await params; 
 
   // Fetch current blog post and related articles
   const data = await client.fetch(`{
