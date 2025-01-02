@@ -1,3 +1,5 @@
+// page.tsx
+
 import { Blog } from "@/components/Home";
 import { client } from "@/sanity/lib/client";
 import Image from "next/image";
@@ -5,6 +7,11 @@ import Link from "next/link";
 import { ArrowLeft, Clock, Share2, Bookmark, Heart } from "lucide-react";
 import { Poppins } from "next/font/google";
 
+interface PageProps {
+  params: {
+    slug: string;
+  };
+}
 
 const roboto = Poppins({
   subsets: ["latin"],
@@ -12,33 +19,29 @@ const roboto = Poppins({
   style: ["normal", "italic"],
 });
 
- 
-
 interface BlogData extends Blog {
   _id: string;
 }
 
-const BlogPost = async ({ params }: { params: { slug: string } }) => {
-const   { slug } = await params;
-
+const BlogPost = async ({ params }: PageProps) => {
+  const { slug } = params;
 
   // Fetch current blog post and related articles
-  const data = await client.fetch(
-    `{
-      "post": *[_type == "blog" && slug.current == $slug][0]{
-        _id,
-        heading,
-        description,
-        "slug": slug.current,
-        "imageUrl": image.asset->url
-      },
-      "relatedPosts": *[_type == "blog" && slug.current != $slug][0...3]{
-        _id,
-        heading,
-        "slug": slug.current,
-        "imageUrl": image.asset->url
-      }
-    }`,
+  const data = await client.fetch(`{
+    "post": *[_type == "blog" && slug.current == $slug][0]{
+      _id,
+      heading,
+      description,
+      "slug": slug.current,
+      "imageUrl": image.asset->url
+    },
+    "relatedPosts": *[_type == "blog" && slug.current != $slug][0...3]{
+      _id,
+      heading,
+      "slug": slug.current,
+      "imageUrl": image.asset->url
+    }
+  }`,
     { slug }
   );
 
