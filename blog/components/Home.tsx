@@ -1,10 +1,17 @@
 import React from 'react';
-import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { client } from '@/sanity/lib/client';
 import Image from 'next/image';
+import { Poppins} from 'next/font/google';
 
-interface Blog {
+const roboto = Poppins({
+    subsets: ['latin'], 
+    weight: ['400', '700'], 
+    style: ['normal', 'italic'], 
+  });
+  
+
+ export interface Blog {
   heading: string;
   description: string;
   slug: string;
@@ -20,7 +27,7 @@ export default async function HomePage() {
   }`);
 
   return (
-    <div className="mt-20 max-w-7xl mx-auto px-4 py-8">
+    <div className={` ${roboto.className} mt-20 max-w-7xl mx-auto px-4 py-8`}>
       <section className="mb-16 text-center">
         <h1 className="text-4xl md:text-6xl font-bold mb-4">Welcome to Our Blog</h1>
         <p className="text-lg text-gray-600">Explore our latest articles and insights</p>
