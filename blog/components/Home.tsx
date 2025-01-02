@@ -45,7 +45,7 @@ export default async function HomePage() {
                     width={200}
                     height={200}
                      
-                    className="object-cover"
+                    className="object-cover w-full "
                     quality={90}
                     priority
                   />
