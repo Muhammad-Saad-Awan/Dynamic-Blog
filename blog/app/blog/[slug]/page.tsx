@@ -18,17 +18,8 @@ interface BlogData extends Blog {
   _id: string;
 }
 
-const fetchParams = async (): Promise<{ slug: string }> => {
-  // Simulate async operation
-  return { slug: "example-slug" };
-};
-
-const BlogPost = async () => {
-  const params = await fetchParams(); // Awaiting the async operation
-  const { slug } = params;
-   
-
-
+const BlogPost = async ({ params }: { params: { slug: string } }) => {
+const   { slug } = await params;
 
 
   // Fetch current blog post and related articles
@@ -51,20 +42,20 @@ const BlogPost = async () => {
     { slug }
   );
 
-  // if (!data.post) {
-  //   return (
-  //     <div className={`${roboto.className} min-h-screen flex items-center justify-center bg-gray-50`}>
-  //       <div className="text-center bg-white p-8 rounded-lg shadow-lg">
-  //         <h1 className="text-3xl font-bold text-gray-800 mb-4">Blog Post Not Found</h1>
-  //         <p className="text-gray-600 mb-6">The blog post you're looking for doesn't exist or has been moved.</p>
-  //         <Link href="/" className="text-blue-600 hover:underline inline-flex items-center gap-2">
-  //           <ArrowLeft size={20} />
-  //           Return to Homepage
-  //         </Link>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (!data.post) {
+    return (
+      <div className={`${roboto.className} min-h-screen flex items-center justify-center bg-gray-50`}>
+        <div className="text-center bg-white p-8 rounded-lg shadow-lg">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">Blog Post Not Found</h1>
+          <p className="text-gray-600 mb-6">The blog post you're looking for doesn't exist or has been moved.</p>
+          <Link href="/" className="text-blue-600 hover:underline inline-flex items-center gap-2">
+            <ArrowLeft size={20} />
+            Return to Homepage
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`${roboto.className} min-h-screen bg-gray-50`}>
