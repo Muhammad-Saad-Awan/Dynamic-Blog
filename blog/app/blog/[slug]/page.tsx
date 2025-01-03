@@ -91,10 +91,10 @@ const BlogPost = async ({ params }: PageProps) => {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-              <h1 className="text-5xl font-bold mb-4 leading-tight">{data.post.heading}</h1>
+              <h1 className="text-5xl max-md:text-xl  font-bold mb-4 leading-tight">{data.post.heading}</h1>
               <div className="flex items-center gap-4 text-gray-200">
                 <div className="flex items-center gap-2">
-                  <Clock size={18} />
+                  <Clock size={18} />          
                   <span>5 min read</span>
                 </div>
                 <span>•</span>
@@ -120,9 +120,10 @@ const BlogPost = async ({ params }: PageProps) => {
               </button>
             </div>
 
-            <div className="max-w-3xl">
-              <div className="prose prose-lg prose-gray">
-                <p className="text-xl text-gray-600 leading-relaxed mb-8">{data.post.description}</p>
+            <div className=" w-full lg:max-w-6xl  ">
+              <div className="">
+                <h1 className="text-center font-bold text-4xl max-md:text-2xl mb-6">Description</h1>
+                <p className="text-base lg:text-xl lg:text-justify text-center leading-relaxed mb-8">{data.post.description}</p>
               </div>
             </div>
           </div>
@@ -130,7 +131,7 @@ const BlogPost = async ({ params }: PageProps) => {
            <CommentSection/>
         {data.relatedPosts.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h2>
+            <h2 className="text-2xl text-center font-bold text-gray-900 mb-6">Related Articles</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {data.relatedPosts.map((post: BlogData) => (
                 <Link
